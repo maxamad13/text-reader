@@ -50,7 +50,71 @@ $(document).ready(function(){
         
     });
     
+    // new button
+    $("#new").click(function(){
+        //reload page
+        location.reload();
+    })
     
+    //pause button$
+    $("#pause").click(function(){
+        clearInterval(action);
+        reading = false;
+        $("#pause").hide();
+        $("#resume").show();
+    });
+    
+    //resume button
+    
+    $("#resume").click(function(){
+        //start reading
+        action = setInterval(read, frequency);
+            
+        //go back to reading mode
+        reading = true;
+                             
+        $("#resume").hide();
+        $("#pause").show();
+    });
+    
+    
+    //changing font size
+    
+    $("#fontsizeslider").on("slidestop",function(event, ui){
+        console.log("sliker working")
+        //refresh slike
+        $("#fontsizeslider").slider("refresh");
+        var sliderValue = parseInt($("#fontsizeslider").val());
+          
+        $("#result").css("font-size", sliderValue);
+        
+        $("#fontsize").text(sliderValue);
+        
+        
+    });
+    
+    
+    // speed slider
+     $("#speedslider").on("slidestop",function(event, ui){
+        console.log("sliker working")
+        //refresh slike
+        $("#speedslider").slider("refresh");
+        var sliderValue = parseInt($("#speedslider").val());
+          
+                
+        $("#speed").text(sliderValue);
+        
+        //stop reading
+        clearInterval(action);
+        
+        //change frequency 
+        frequency = 60000/sliderValue;
+        
+        //resume if we reading mode
+        if(reading){
+            action = setInterval(read, frequency);
+        }
+    });
     function read(){
         if(counter == inputLength - 1){
            //clearInterval(action);
